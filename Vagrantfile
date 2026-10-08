@@ -13,6 +13,28 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "debian/bookworm64"
+  #  DHCP
+  config.vm.define "dhcp" do |dhcp|
+    dhcp.vm.network "public_network", bridge: "enp4s0"
+
+    dhcp.vm.network "private_network",
+      ip: "192.168.57.10",
+      virtualbox__intnet: "intnet"
+  end
+
+  # C1 
+  config.vm.define "c1" do |c1|
+    c1.vm.network "private_network",
+      type: "dhcp",
+      virtualbox__intnet: "intnet"
+  end
+
+  # C2
+  config.vm.define "printer" do |printer|
+    printer.vm.network "private_network",
+      type: "dhcp",
+      virtualbox__intnet: "intnet"
+  end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
